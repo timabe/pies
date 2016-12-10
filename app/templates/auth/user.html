@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Delicious Pies - {{ user.username }}{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>{{ user.username }}</h1>
+    {% if user.name %}
+    <p>
+        {% if user.name %}{{ user.name }}{% endif %}
+    </p>
+    {% endif %}
+    <p>Member since {{ moment(user.created_at).format('L') }}. Last seen {{ moment(user.last_seen).fromNow() }}.</p>
+    {% if orders==0 %}
+    <p>You haven't ordered any pies yet. What's wrong with you?</p>
+    {% else %}
+    <p>You've ordered {{ orders }} pies. Yum.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Delicious Pies - Thanks for your order{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+  <h1>Your {{ pie.name | lower}} on it's way!</h1>
+</div>
+<div>
+  <h2>Description: {{ pie.description }}</h2>
+</div>
+<a href="{{ url_for('.index') }}">Order some more!</a>
+{% endblock %}

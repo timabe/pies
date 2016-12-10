@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Delicious Pies{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Welcome! Please <a href="{{ url_for('auth.register') }}">Sign Up </a> or <a href="{{ url_for('auth.login') }}">Log In</a></h1>
+</div>
+
+<h2> Today's Menu </h2>
+<ul class="list-group" id='menu'>
+{% for pie in pies %}
+  <li class="list-group-item">{{ pie.name }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
+
