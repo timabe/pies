@@ -1,3 +1,18 @@
+## This branch has additional commits showing how to hook [segment](https://segment.com) up for an app
+To redeploy this version, first sign up for an account with segment and get a write key (preferably, get two: one for development and one for production).
+
+```
+# if you haven't done this yet
+git checkout segment_integration
+# for testing/development
+export SEGMENT_DEV_KEY=<DEV_KEY>
+# for production
+heroku config:set SEGMENT_KEY=<PROD_KEY>
+git push -f heroku segment_integration:master
+# redeploy (no need to add the seed flags)
+heroku run python manage.py deploy
+```
+
 # Delicious Pies: A sample Flask app to practice analytics on
 
 ![Home page of the app](screenshots/app_screenshot.png "Screenshot of the app")

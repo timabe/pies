@@ -4,6 +4,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+    SEGMENT_WRITE_KEY = os.environ.get('SEGMENT_DEV_KEY')
 
     @staticmethod
     def init_app(app):
@@ -24,6 +25,7 @@ class ProductionConfig(Config):
 
 class HerokuConfig(ProductionConfig):
     SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
+    SEGMENT_WRITE_KEY = os.environ.get('SEGMENT_KEY')
 
     @classmethod
     def init_app(cls, app):
