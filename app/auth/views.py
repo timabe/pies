@@ -5,6 +5,9 @@ from . import auth
 from .. import db
 from ..models import User, Pies, Orders
 from .forms import LoginForm, RegistrationForm, PieChoices
+import analytics
+from ..segment_analytics import get_anon_id
+
 
 @auth.before_app_request
 def before_request():
@@ -18,6 +21,8 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
+            analytics.track(current_user.id, 'Good Login Attempt',
+                            anonymous_id=get_anon_id())
             return redirect(request.args.get('next') or url_for('auth.index'))
         flash('Invalid username or password.')
     return render_template('auth/login.html', form=form)
@@ -34,14 +39,20 @@ def logout():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(email=form.email.data,
-                    name=form.name.data,
-                    username=form.username.data,
-                    password=form.password.data)
-        db.session.add(user)
-        flash('You can now login.')
-        return redirect(url_for('auth.login'))
+    if form.is_submitted():
+        if form.validate():
+            user = User(email=form.email.data,
+                        name=form.name.data,
+                        username=form.username.data,
+                        password=form.password.data)
+            db.session.add(user)
+            analytics.track(None, 'Successful Registration',
+                            anonymous_id=get_anon_id())
+            flash('You can now login.')
+            return redirect(url_for('auth.login'))
+        else:
+            analytics.track(None, 'Bad Registration Attempt',
+                            anonymous_id=get_anon_id())
     return render_template('auth/register.html', form=form)
 
 @auth.route('/', methods = ['GET','POST'])

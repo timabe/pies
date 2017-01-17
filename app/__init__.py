@@ -4,6 +4,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import config
+import analytics
 
 bootstrap = Bootstrap()
 moment = Moment()
@@ -18,6 +19,7 @@ def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
+    analytics.write_key=config[config_name].SEGMENT_WRITE_KEY
 
     bootstrap.init_app(app)
     moment.init_app(app)
