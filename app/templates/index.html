@@ -5,7 +5,7 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Welcome! Please <a href="{{ url_for('auth.register') }}">Sign Up </a> or <a href="{{ url_for('auth.login') }}">Log In</a></h1>
+    <h1>Welcome! Please <a href="{{ url_for('auth.register') }}" onclick="analytics.track('Main Sign up Clicked')">Sign Up </a> or <a href="{{ url_for('auth.login') }}" onclick="analytics.track('Main Log in Clicked')">Log In</a></h1>
 </div>
 
 <h2> Today's Menu </h2>
