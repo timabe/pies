@@ -22,6 +22,17 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
+class AWSConfig(Config):
+    SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
+    SQLALCHEMY_DATABASE_URI = 'postgres://' + \
+    os.environ.get('RDS_USERNAME') + ':' + \
+    os.environ.get('RDS_PASSWORD') + '@' + \
+    os.environ.get('RDS_HOSTNAME') + ':' + \
+    os.environ.get('RDS_PORT') + '/' + \
+    os.environ.get('RDS_DATABASE')
+
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+
 class HerokuConfig(ProductionConfig):
     SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
 
@@ -46,5 +57,6 @@ config = {
     'testing': TestingConfig,
     'production': ProductionConfig,
     'heroku': HerokuConfig,
+    'aws': AWSConfig,
     'default': DevelopmentConfig
 }
